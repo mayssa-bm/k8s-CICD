@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+   
+    environment {
+        registry = "maissa47/mypythonapp"
+        dockerImage = ''
+        registryCredential='DockerHub_ID'
+    }
+    stages {
+        stage('checkout') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/mayssa-bm/k8s-CICD']]])
+            }
+        }
+        stage('build docker image') {
+            steps {
+                script {
+                    dockerImage = docker.build registry
+                    }
+            }
+        }
+         stage('Upload Image') {
+            steps{    
+                script {
+                    docker.withRegistry( '', registryCredential ) {
+                    dockerImage.push()
+                    }
+                }
+             }
+         }
+        
+    }
+}
