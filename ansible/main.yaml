@@ -50,7 +50,7 @@
               ports:
                 - containerPort: 8080
 
-# Create Kubernetes Service (DNS required)
+# Create Kubernetes Service 
     - name: Create a Service 
       k8s:
         state: present
