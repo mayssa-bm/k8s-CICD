@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('checkout') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/mayssa-bm/k8s-CICD']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/mayssa-bm/TodoApp']]])
             }
         }
         stage('build docker image') {

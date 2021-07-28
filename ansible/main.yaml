@@ -14,7 +14,7 @@
       register: minikube_status
       changed_when: false
       ignore_errors: true
-    # Otherwise will start minikube
+    # Otherwise  start minikube
     - name: Start Minikube if it's not running.
       command: minikube start
       when: "not minikube_status.stdout or 'Running' not in minikube_status.stdout"
@@ -26,13 +26,13 @@
         docker images -q {{ image_name }}
       register: image_hash
       changed_when: false
-# Otherwise will create an image from Dockerfile location
+# Otherwise  create an image from Dockerfile location
     - name: Build image if it's not already built.
       shell: |
         eval $(minikube docker-env)
         docker build -t {{ image_name }} ../k8s-CICD
       when: not image_hash.stdout
-# Create Kubernetes resources to run Hello Go.
+# Create Kubernetes resources 
     - name: Create a Deployment 
       k8s:
         state: present
@@ -67,19 +67,3 @@
               targetPort: 8180
             selector:
               app: firstpod
-post_tasks:
-    #Example export using minikube services
-    - name: Expose app on the host via Minikube.
-      command: minikube service firstpod --url=true
-      changed_when: false
-      register: minikube_service
-    - debug:
-        msg: " URL: {{ minikube_service['stdout_lines'][0] }}"
-- name: Verify app is responding.
-      uri:
-        url: "{{ minikube_service['stdout_lines'][0] }}/test"
-        return_content: true
-      register: response
-      failed_when: "'/test' not in response.content"
-- debug:
-        msg: "Testing URL  Requested: {{response.content}} Status: {{response.status}}"
