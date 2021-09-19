@@ -1,0 +1,8 @@
+Jenkins plugins :
+- Docker plugin
+- Git parameter 
+- Generic Webhook Trigger Plugin 
+
+in the config set the Generic Webhook Trigger token to abc123 (similar to token in url)
+
+DockerHub_ID : add dockerHub credentials in Jenkins
